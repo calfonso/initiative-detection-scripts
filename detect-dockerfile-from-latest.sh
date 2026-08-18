@@ -61,7 +61,7 @@ while IFS= read -r dockerfile; do
             continue
         fi
     done < <(grep -n -i '^[[:space:]]*FROM ' "${dockerfile}" 2>/dev/null)
-done < <(find "${REPO_DIR}" -maxdepth 3 -type f \( -name "Dockerfile" -o -name "Dockerfile.*" -o -name "*.Dockerfile" -o -name "Containerfile" \) 2>/dev/null)
+done < <(find "${REPO_DIR}" -type f \( -name "Dockerfile" -o -name "Dockerfile.*" -o -name "*.Dockerfile" -o -name "Containerfile" \) 2>/dev/null)
 
 HIT_COUNT=$(echo "${HITS}" | jq 'length')
 
