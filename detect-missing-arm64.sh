@@ -16,6 +16,7 @@ RAW_EXIT=$?
 
 if [[ ${RAW_EXIT} -ne 0 ]]; then
     ERROR_MSG=$(echo "${RAW}" | head -3 | tr '"' "'" | tr '\n' ' ')
+    echo "ERROR: skopeo inspect --raw failed (rc=${RAW_EXIT}): ${ERROR_MSG}" >&2
     jq -n --arg err "Error inspecting image: ${ERROR_MSG}" \
         '{"affected":false,"summary":$err,"severity":"info","hits":[],"implementation_spec":""}'
     exit 0
