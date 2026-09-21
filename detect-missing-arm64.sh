@@ -9,6 +9,14 @@ fi
 
 echo "Checking arm64/aarch64 availability for: ${IMAGE_REF}" >&2
 
+# Skip bundle images — they contain only metadata (YAML manifests),
+# not architecture-specific binaries, so they are always single-arch.
+if [[ "${IMAGE_REF}" == *"-bundle"* ]]; then
+    echo "Skipping bundle image" >&2
+    jq -n '{"affected":false,"summary":"Bundle image (metadata only, not architecture-specific)","severity":"info","hits":[],"implementation_spec":""}'
+    exit 0
+fi
+
 # Fetch the raw manifest — this could be a manifest list (multi-arch)
 # or a single-platform manifest.
 RAW=$(skopeo inspect --raw "docker://${IMAGE_REF}" 2>&1)
